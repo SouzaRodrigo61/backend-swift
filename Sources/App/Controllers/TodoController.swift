@@ -1,8 +1,10 @@
 import Fluent
 import Vapor
 
-struct TodoController: RouteCollection {
-    func boot(routes: RoutesBuilder) throws {
+public struct TodoController: RouteCollection {
+    public init() {}
+    
+    public func boot(routes: RoutesBuilder) throws {
         let todos = routes.grouped("todos")
         todos.get(use: index)
         todos.post(use: create)
@@ -12,7 +14,7 @@ struct TodoController: RouteCollection {
     }
 
     func index(req: Request) async throws -> [Todo] {
-        try await Todo.query(on: req.db).all()
+        return try await Todo.query(on: req.db).all()
     }
 
     func create(req: Request) async throws -> Todo {
