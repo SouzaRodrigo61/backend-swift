@@ -1,5 +1,5 @@
-import App
-import Presentation
+import Features
+import Framework
 import XCTVapor
 
 final class AppTests: XCTestCase {

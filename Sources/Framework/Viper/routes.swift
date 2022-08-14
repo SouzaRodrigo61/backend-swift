@@ -1,4 +1,4 @@
-import App
+import Features
 import Vapor
 
 func routes(_ app: Application) throws {

@@ -14,7 +14,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "App",
+            name: "Features",
             dependencies: [
                 .product(name: "Fluent", package: "fluent"),
                 .product(name: "FluentMySQLDriver", package: "fluent-mysql-driver"),
@@ -28,9 +28,9 @@ let package = Package(
             ]
         ),
         .target(
-            name: "Presentation",
+            name: "Framework",
             dependencies: [
-                .target(name: "App"),
+                .target(name: "Features"),
                 .product(name: "Fluent", package: "fluent"),
                 .product(name: "FluentMySQLDriver", package: "fluent-mysql-driver"),
                 .product(name: "Vapor", package: "vapor")
@@ -45,14 +45,14 @@ let package = Package(
         .executableTarget(
             name: "Run",
             dependencies: [
-                .target(name: "Presentation")
+                .target(name: "Framework")
             ]
         ),
         .testTarget(
             name: "AppTests",
             dependencies: [
-                .target(name: "App"),
-                .target(name: "Presentation"),
+                .target(name: "Features"),
+                .target(name: "Framework"),
                 .product(name: "XCTVapor", package: "vapor"),
             ]
         )

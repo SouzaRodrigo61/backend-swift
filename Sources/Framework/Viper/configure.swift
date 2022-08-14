@@ -1,4 +1,4 @@
-import App
+import Features
 import Fluent
 import FluentMySQLDriver
 import Vapor
@@ -25,8 +25,6 @@ public func configure(_ app: Application) throws {
     
     app.http.server.configuration.port = Int(Environment.get("OWOC_PORT") ?? "0000") ?? 8080
     
-    
-    
     var tls = TLSConfiguration.makeClientConfiguration()
     tls.certificateVerification = .none
 
@@ -41,8 +39,6 @@ public func configure(_ app: Application) throws {
 
     app.migrations.add(CreateTodo())
     
-    try app.autoMigrate().wait()
-
     // register routes
     try routes(app)
 }

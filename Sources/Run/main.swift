@@ -6,6 +6,6 @@
 //  Created by Rodrigo Souza on 12/08/22.
 //
 
-import Presentation
+import Framework
 
-applicationMain()
+try applicationMain()
