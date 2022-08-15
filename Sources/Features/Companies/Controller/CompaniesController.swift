@@ -14,8 +14,14 @@ struct CompaniesController: RouteCollection {
         companies.get(use: index)
     }
     
-    func index(req: Request) async throws -> String {
-        return "Oi"
+    func index(req: Request) async throws -> [Companies] {
+        return try await Companies.query(on: req.db).all()
+    }
+    
+    func create(req: Request) async throws -> Companies {
+        let company = try req.content.decode(Companies.self)
+        try await company.save(on: req.db)
+        return company
     }
     
 }

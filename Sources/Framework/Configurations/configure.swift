@@ -38,6 +38,7 @@ public func configure(_ app: Application) throws {
     ), as: .mysql)
 
     app.migrations.add(CreateTodo())
+    app.migrations.add(CreateCompanies())
     
     // register routes
     try routes(app)
