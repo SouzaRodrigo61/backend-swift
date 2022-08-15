@@ -12,6 +12,7 @@ struct CompaniesController: RouteCollection {
     func boot(routes: Vapor.RoutesBuilder) throws {
         let companies = routes.grouped("companies")
         companies.get(use: index)
+        companies.post(use: create)
     }
     
     func index(req: Request) async throws -> [Companies] {

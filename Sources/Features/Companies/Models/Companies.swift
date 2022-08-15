@@ -9,12 +9,14 @@ import Fluent
 import Vapor
 
 final class Companies: Model, Content {
-    //    typealias IDValue = String
     
     static let schema = "companies"
     
-    @ID(custom: "cnpj", generatedBy: .user)
-    var id: String?
+    @ID(key: .id)
+    var id: UUID?
+    
+    @Field(key: "cnpj")
+    var cnpj: String
     
     @Field(key: "name")
     var name: String
@@ -32,8 +34,12 @@ final class Companies: Model, Content {
     
     init() { }
     
-    //    init(id: UUID? = nil, title: String) {
-    //        self.id = id
-    //        self.title = title
-    //    }
+    init(cnpj: String,
+         name: String,
+         location: String
+    ) {
+        self.cnpj = cnpj
+        self.name = name
+        self.location = location
+    }
 }

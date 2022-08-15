@@ -13,7 +13,9 @@ public struct CreateCompanies: AsyncMigration {
     
     public func prepare(on database: FluentKit.Database) async throws {
         try await database.schema("companies")
-            .field("cnpj", .string, .identifier(auto: false))
+            .id()
+            .field("cnpj", .string, .required)
+            .unique(on: "cnpj", name: "no_duplicate_cnpj")
             .field("name", .string, .required)
             .field("location", .string, .required)
             .field("created_at", .datetime)
