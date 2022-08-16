@@ -23,29 +23,33 @@ public func configure(_ app: Application) throws {
     // Add CORS with default configuration
     app.middleware.use(CORSMiddleware())
     
+    app.logger.info("Configurou o CORS")
+    
     app.http.server.configuration.port = Int(Environment.get("OWOC_PORT") ?? "0000") ?? 8080
+
+    app.logger.info("Configurou a porta")
     
     var tls = TLSConfiguration.makeClientConfiguration()
     tls.certificateVerification = .none
     
     app.databases.use(.mysql(
-        hostname: "l1b24gdqhbi1.aws-sa-east-1-1.psdb.cloud",
-        port: MySQLConfiguration.ianaPortNumber,
-        username: "rsyehdv9rgyr",
-        password: "pscale_pw_6lEXuKj7tg8G6HjngGip4d9qYJ5xBL5wzBIk6RSjblU",
-        database: "owoc",
-        // hostname: Environment.get("DATABASE_HOST") ?? "localhost",
-        // port: Environment.get("DATABASE_PORT").flatMap(Int.init(_:)) ?? MySQLConfiguration.ianaPortNumber,
-        // username: Environment.get("DATABASE_USERNAME") ?? "vapor_username",
-        // password: Environment.get("DATABASE_PASSWORD") ?? "vapor_password",
-        // database: Environment.get("DATABASE_NAME") ?? "vapor_database",
+        hostname: Environment.get("DATABASE_HOST") ?? "localhost",
+        port: Environment.get("DATABASE_PORT").flatMap(Int.init(_:)) ?? MySQLConfiguration.ianaPortNumber,
+        username: Environment.get("DATABASE_USERNAME") ?? "vapor_username",
+        password: Environment.get("DATABASE_PASSWORD") ?? "vapor_password",
+        database: Environment.get("DATABASE_NAME") ?? "vapor_database",
         tlsConfiguration: tls
-    ), as: .mysql)
+    ), as: .mysql)''
+
+    app.logger.info("Subiu o ambiente do mysql")
 
     app.migrations.add(CreateTodo())
     app.migrations.add(CreateCompanies())
     
     try app.autoMigrate().wait()
+    
+    
+    app.logger.info("Subiu os migrations necessarios")
     
     // register routes
     try routes(app)
