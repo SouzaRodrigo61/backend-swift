@@ -39,7 +39,7 @@ public func configure(_ app: Application) throws {
         password: Environment.get("DATABASE_PASSWORD") ?? "vapor_password",
         database: Environment.get("DATABASE_NAME") ?? "vapor_database",
         tlsConfiguration: tls
-    ), as: .mysql)''
+    ), as: .mysql)
 
     app.logger.info("Subiu o ambiente do mysql")
 
