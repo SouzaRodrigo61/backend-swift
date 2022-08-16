@@ -48,7 +48,6 @@ public func configure(_ app: Application) throws {
     
     try app.autoMigrate().wait()
     
-    
     app.logger.info("Subiu os migrations necessarios")
     
     // register routes
