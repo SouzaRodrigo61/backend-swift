@@ -11,6 +11,9 @@ let package = Package(
         .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0"),
         .package(url: "https://github.com/vapor/fluent.git", from: "4.0.0"),
         .package(url: "https://github.com/vapor/fluent-mysql-driver.git", from: "4.0.0"),
+        
+        // Kafka
+        .package(url: "https://github.com/IBM-Swift/SwiftKafka.git", from: "0.0.1"),
     ],
     targets: [
         .target(

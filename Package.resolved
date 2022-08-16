@@ -217,6 +217,15 @@
       }
     },
     {
+      "identity" : "swiftkafka",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/IBM-Swift/SwiftKafka.git",
+      "state" : {
+        "revision" : "7e2ffdd8208525ea6ccaffc634e2d46818915196",
+        "version" : "0.0.1"
+      }
+    },
+    {
       "identity" : "vapor",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/vapor.git",
