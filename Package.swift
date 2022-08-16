@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "owoc-backend",
     platforms: [
-       .macOS(.v12)
+       .macOS(.v11)
     ],
     dependencies: [
         // 💧 A server-side Swift web framework.
