@@ -8,3 +8,5 @@ db.sqlite
 .swiftpm
 .env
 .env.*
+
+Package.resolved

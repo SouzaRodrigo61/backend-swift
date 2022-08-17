@@ -5,13 +5,16 @@
 //  Created by Rodrigo Souza on 14/08/22.
 //
 
-import Foundation
 import Fluent
 
-public struct CreateCompanies: AsyncMigration {
-    public init() {}
+struct CreateCompanies: AsyncMigration {
     
-    public func prepare(on database: FluentKit.Database) async throws {
+    func prepare(on database: FluentKit.Database) async throws {
+        let companyStatus = try await database.enum("company_status")
+            .case("alive")
+            .case("closed")
+            .create()
+        
         try await database.schema("companies")
             .id()
             .field("cnpj", .string, .required)
@@ -21,9 +24,13 @@ public struct CreateCompanies: AsyncMigration {
             .field("created_at", .datetime)
             .field("updated_at", .datetime)
             .create()
+        
+        try await database.schema("companies")
+            .field("company_status", companyStatus, .required)
+            .update()
     }
-
-    public func revert(on database: FluentKit.Database) async throws {
+    
+    func revert(on database: FluentKit.Database) async throws {
         try await database.schema("companies").delete()
     }
     

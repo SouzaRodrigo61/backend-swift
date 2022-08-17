@@ -8,6 +8,11 @@
 import Fluent
 import Vapor
 
+enum CompanyStatus: String, Codable {
+    case alive
+    case closed
+}
+
 final class Companies: Model, Content {
     
     static let schema = "companies"
@@ -24,6 +29,9 @@ final class Companies: Model, Content {
     @Field(key: "location")
     var location: String
     
+    @Enum(key: "company_status")
+    var status: CompanyStatus
+    
     // When this Planet was created.
     @Timestamp(key: "created_at", on: .create)
     var createdAt: Date?
@@ -36,10 +44,12 @@ final class Companies: Model, Content {
     
     init(cnpj: String,
          name: String,
-         location: String
+         location: String,
+         status: CompanyStatus
     ) {
         self.cnpj = cnpj
         self.name = name
         self.location = location
+        self.status = status
     }
 }
