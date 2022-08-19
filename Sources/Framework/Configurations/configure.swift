@@ -1,4 +1,3 @@
-import Features
 import Fluent
 import FluentMySQLDriver
 import Vapor
@@ -17,49 +16,43 @@ var openRegistration: Bool = false
 ///
 /// https://docs.vapor.codes/3.0/getting-started/structure/#configureswift
 public func configure(_ app: Application) throws {
-    // uncomment to serve files from /Public folder
-    // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     
-    // Add CORS with default configuration
-    app.middleware.use(CORSMiddleware())
-    
+    // MARK: CORS with default configuration
+    let corsConfiguration = CORSMiddleware.Configuration(
+        allowedOrigin: .all,
+        allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
+        allowedHeaders: [.accept, .authorization, .contentType, .origin, .xRequestedWith, .userAgent, .accessControlAllowOrigin]
+    )
+    let cors = CORSMiddleware(configuration: corsConfiguration)
+    app.middleware.use(cors, at: .beginning)
     app.logger.info("Configurou o CORS")
     
+    // MARK: Porta configuração
     app.http.server.configuration.port = Int(Environment.get("OWOC_PORT") ?? "0000") ?? 8080
-
     app.logger.info("Configurou a porta")
-    
+
+    // MARK: Database connection
     var tls = TLSConfiguration.makeClientConfiguration()
     tls.certificateVerification = .none
-    
     app.databases.use(.mysql(
-                hostname: "f7cqt8z44y8d.us-east-1.psdb.cloud",
-                port: MySQLConfiguration.ianaPortNumber,
-                username: "gcoc7pqw06ph",
-                password: "pscale_pw_9wjDPJdfycGOeKLxpi3eLEe8RzxjQG-bbiqKWPEyA7c",
-                database: "owoc",
-
-//         hostname: Environment.get("DATABASE_HOST") ?? "localhost",
-//         port: Environment.get("DATABASE_PORT").flatMap(Int.init(_:)) ?? MySQLConfiguration.ianaPortNumber,
-//         username: Environment.get("DATABASE_USERNAME") ?? "vapor_username",
-//         password: Environment.get("DATABASE_PASSWORD") ?? "vapor_password",
-//         database: Environment.get("DATABASE_NAME") ?? "vapor_database",
+         hostname: Environment.get("DATABASE_HOST") ?? "localhost",
+         port: Environment.get("DATABASE_PORT").flatMap(Int.init(_:)) ?? MySQLConfiguration.ianaPortNumber,
+         username: Environment.get("DATABASE_USERNAME") ?? "vapor_username",
+         password: Environment.get("DATABASE_PASSWORD") ?? "vapor_password",
+         database: Environment.get("DATABASE_NAME") ?? "vapor_database",
         tlsConfiguration: tls
     ), as: .mysql)
+    
+    app.sessions.use(.fluent(.mysql))
 
+    
+    // MARK: Migrations
     app.logger.info("Subiu o ambiente do mysql")
-
-    app.migrations.add(CreateTodo())
-    
-    companyMigrate(migrate: app.migrations)
-    productTypeMigrate(migrate: app.migrations)
-    orderMigrate(migrate: app.migrations)
-    
+    migrate(migrate: app.migrations)
     try app.autoMigrate().wait()
-    
     app.logger.info("Subiu os migrations necessarios")
     
-    // register routes
+    // MARK: register Routes
     try routes(app)
 }
 

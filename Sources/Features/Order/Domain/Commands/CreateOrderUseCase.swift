@@ -7,6 +7,9 @@
 
 import Foundation
 
-func createOrderUseCase() {
+
+struct CreateOrderUseCase {
+    static let shared = CreateOrderUseCase()
     
+    func execute() {}
 }

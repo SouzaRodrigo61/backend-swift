@@ -15,14 +15,17 @@ struct OrderController: RouteCollection {
         order.post(use: create)
     }
     
-    func index(req: Request) async throws -> [Orders] {
-        return try await Orders.query(on: req.db).all()
+    func index(req: Request) async throws -> Response {
+        let orders = try await ListOrderUseCase.shared.execute(req.logger, database: req.db)
+        let json = try JSONEncoder().encode(orders)
+        return .init(status: .ok, body: .init(data: json))
     }
     
-    func create(req: Request) async throws -> Orders {
+    func create(req: Request) async throws -> Response {
         let order = try req.content.decode(Orders.self)
         try await order.save(on: req.db)
-        return order
+        let json = try JSONEncoder().encode(order)
+        return .init(status: .created, body: .init(data: json))
     }
     
 }
