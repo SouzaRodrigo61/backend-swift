@@ -8,11 +8,6 @@
 import Fluent
 import Vapor
 
-enum CompanyStatus: String, Codable {
-    case alive
-    case closed
-}
-
 final class Companies: Model, Content {
     
     static let schema = "companies"

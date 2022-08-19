@@ -33,11 +33,17 @@ public func configure(_ app: Application) throws {
     tls.certificateVerification = .none
     
     app.databases.use(.mysql(
-         hostname: Environment.get("DATABASE_HOST") ?? "localhost",
-         port: Environment.get("DATABASE_PORT").flatMap(Int.init(_:)) ?? MySQLConfiguration.ianaPortNumber,
-         username: Environment.get("DATABASE_USERNAME") ?? "vapor_username",
-         password: Environment.get("DATABASE_PASSWORD") ?? "vapor_password",
-         database: Environment.get("DATABASE_NAME") ?? "vapor_database",
+                hostname: "f7cqt8z44y8d.us-east-1.psdb.cloud",
+                port: MySQLConfiguration.ianaPortNumber,
+                username: "gcoc7pqw06ph",
+                password: "pscale_pw_9wjDPJdfycGOeKLxpi3eLEe8RzxjQG-bbiqKWPEyA7c",
+                database: "owoc",
+
+//         hostname: Environment.get("DATABASE_HOST") ?? "localhost",
+//         port: Environment.get("DATABASE_PORT").flatMap(Int.init(_:)) ?? MySQLConfiguration.ianaPortNumber,
+//         username: Environment.get("DATABASE_USERNAME") ?? "vapor_username",
+//         password: Environment.get("DATABASE_PASSWORD") ?? "vapor_password",
+//         database: Environment.get("DATABASE_NAME") ?? "vapor_database",
         tlsConfiguration: tls
     ), as: .mysql)
 
@@ -47,6 +53,7 @@ public func configure(_ app: Application) throws {
     
     companyMigrate(migrate: app.migrations)
     productTypeMigrate(migrate: app.migrations)
+    orderMigrate(migrate: app.migrations)
     
     try app.autoMigrate().wait()
     
