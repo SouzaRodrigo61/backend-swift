@@ -7,8 +7,11 @@
 
 import Foundation
 import Vapor
+import Utils
 
 struct OrderController: RouteCollection {
+    let encoder = JSONFormatter()
+    
     func boot(routes: Vapor.RoutesBuilder) throws {
         let order = routes.grouped("order")
         order.get(use: index)
@@ -17,14 +20,16 @@ struct OrderController: RouteCollection {
     
     func index(req: Request) async throws -> Response {
         let orders = try await ListOrderUseCase.shared.execute(req.logger, database: req.db)
-        let json = try JSONEncoder().encode(orders)
+        
+        let json = try encoder.encode(orders)
         return .init(status: .ok, body: .init(data: json))
     }
     
     func create(req: Request) async throws -> Response {
         let order = try req.content.decode(Orders.self)
         try await order.save(on: req.db)
-        let json = try JSONEncoder().encode(order)
+        
+        let json = try encoder.encode(order)
         return .init(status: .created, body: .init(data: json))
     }
     
